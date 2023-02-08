@@ -68,7 +68,9 @@ string chooseWordFromList(const vector<string>& wordList, int index)
 {
     // TODO: Return a lowercase word in the index position of the vector wordList.
     string answer;
-    answer = wordList[index];
+    int len = wordList[index].length();
+    for(int i=0; i<len; i++) 
+        answer += tolower(wordList[index][i]);
     return answer;
 }
 
@@ -121,6 +123,7 @@ void updateSecretWord(string& secretWord, const char ch, const string& word)
 void updateEnteredChars(const char ch, string& chars){
     // TODO: append the character ch is in end of the text chars
     chars += ch;
+    chars += ' ';
     
 }
 
@@ -161,7 +164,7 @@ void processData(const char ch, const string& word,
     ***/
     if (isCharInWord(ch, word)) {
         updateSecretWord(secretWord, ch, word);
-        updateEnteredChars(ch, incorrectChars);
+        updateEnteredChars(ch, correctChars);
     }
     else {
         updateIncorrectGuess(incorrectGuess);
