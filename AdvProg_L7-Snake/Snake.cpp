@@ -25,6 +25,11 @@ Snake::~Snake()
             p = nextNode;
     }
     */
+    //SnakeNode *p = tail;
+    //while (p != nullptr) {
+    //    SnakeNode* nextNode = p->next;
+    //    p = nextNode;
+    //}
 }
 
 // DO NOT CHANGE METHOD
@@ -52,8 +57,14 @@ vector<Position> Snake::getPositions() const
 void Snake::growAtFront(Position newPosition)
 {
     // head of snake grow at new position
-	
+    //std::cout << "Tail: " << tail->position.x << std::endl;
+    //std::cout << "Tail: " << tail->position.y << std::endl;
     /* YOUR CODE HERE */
+    head->next = tail;
+    //std::cout << "Tail: " << tail->position.x << std::endl;
+    //std::cout << "Tail: " << tail->position.y << std::endl;
+    head->position = newPosition;
+    //std::cout << head->position.x  << " " << head->position.y << std::endl;
 }
 
 
@@ -80,19 +91,24 @@ void Snake::growAtFront(Position newPosition)
 ***/
 
 void Snake::slideTo(Position newPosition)
-{
+{   
 	if (tail->next == nullptr) { 
         // position is assigned by new position.
 		/* YOUR CODE HERE */
+        tail->position = newPosition;
+        //std::cout << "Tail: " << tail->position.x << " " << tail->position.y << std::endl;
 	}
 	else {
 		SnakeNode *oldTailNode = tail;
 		//cut the old tail off the snake
         /* YOUR CODE HERE */
-		
+        tail = tail->next;
+        oldTailNode->next = nullptr;
 		// move it to the head of the snake
         /* YOUR CODE HERE */
-		head = oldTailNode;
+        oldTailNode->position = newPosition;
+        head->next = oldTailNode;
+        //std::cout << "slideto if Worked" << std::endl;
 	}
 }
 
@@ -111,6 +127,7 @@ void Snake::slideTo(Position newPosition)
 void Snake::eatCherry()
 {
 	/* YOUR CODE HERE */
+    cherry++;
 }
 
 /*** 
@@ -144,16 +161,21 @@ void Snake::move(Direction direction)
     Position newPosition = head->position.move(direction);
 
     /* YOUR CODE HERE */
-    
+    game.snakeMoveTo(newPosition);
     // If gameOver, return ; 
     /* YOUR CODE HERE */
-
+    if (game.isGameOver()) {
+        std::cout << game.getScore() << std::endl;
+    }
     // If cherry > 0, cherry descrease one and growAtFront() with newPosition
     if (cherry > 0) {
         /* YOUR CODE HERE */
+        cherry--;
+        growAtFront(newPosition);
     } else {
     	game.snakeLeave(tail->position);
-        /* YOUR CODE HERE */        
+        /* YOUR CODE HERE */  
+        slideTo(newPosition);
     }
 }
 
